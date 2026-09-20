@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CineTribo — cinema com curadoria e comunidade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14100e;
+    --bg-card: #241a16;
+    --gold: #cf9f47;
+    --gold-soft: #e8c983;
+    --red: #7c1f2b;
+    --red-soft: #a23244;
+    --cream: #f4ecdf;
+    --cream-dim: rgba(244,236,223,0.68);
+    --cream-faint: rgba(244,236,223,0.4);
+    --rule: rgba(244,236,223,0.14);
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  .wrap{ max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  .backdrop{
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(124,31,43,0.35), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 100%, rgba(207,159,71,0.10), transparent 55%),
+      var(--bg);
+  }
+
+  header{ padding: 28px 0 0; }
+  .brand{ display: flex; align-items: baseline; gap: 10px; text-decoration: none; }
+  .brand-mark{ font-family: var(--font-display); font-weight: 600; font-size: 20px; }
+  .brand-mark em{ font-style: normal; color: var(--gold-soft); }
+
+  .hero{ padding: 88px 0 72px; text-align: center; }
+  .hero-eyebrow{ font-size: 15px; color: var(--gold-soft); font-family: var(--font-display); font-style: italic; margin: 0 0 18px; }
+  .hero h1{
+    font-family: var(--font-display); font-weight: 600;
+    font-size: clamp(40px, 7vw, 74px); line-height: 1.04; letter-spacing: -0.01em;
+    margin: 0 0 26px; max-width: 15ch; margin-inline: auto;
+  }
+  .hero h1 .accent{ color: var(--gold-soft); font-style: italic; font-weight: 500; }
+  .hero p.lede{ font-size: 19px; color: var(--cream-dim); max-width: 46ch; margin: 0 auto 40px; }
+
+  .cta-row{ display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .btn-primary{
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--gold-soft); color: #221408;
+    font-family: var(--font-body); font-weight: 700; font-size: 17px;
+    padding: 16px 34px; border-radius: 4px; border: none;
+    text-decoration: none; cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary:hover{ background: #f2d99a; transform: translateY(-1px); }
+  .btn-primary:disabled{ opacity: 0.6; cursor: default; transform: none; }
+  .cta-note{ font-size: 13px; color: var(--cream-faint); }
+
+  .ticket-divider{ display: flex; align-items: center; justify-content: center; gap: 14px; color: var(--cream-faint); margin: 8px 0 0; }
+  .ticket-divider::before, .ticket-divider::after{ content: ""; height: 1px; width: 60px; background: var(--rule); }
+
+  section{ padding: 64px 0; border-top: 1px solid var(--rule); }
+
+  .split{ display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+  @media (max-width: 760px){ .split{ grid-template-columns: 1fr; gap: 36px; } }
+  .split h2{ font-family: var(--font-display); font-weight: 600; font-size: 28px; margin: 0 0 4px; }
+  .split .kicker{ font-size: 14px; color: var(--red-soft); font-weight: 600; margin: 0 0 10px; }
+  .split p{ color: var(--cream-dim); font-size: 16px; margin: 0; }
+
+  .segments h2{ font-family: var(--font-display); font-weight: 600; font-size: 32px; text-align: center; margin: 0 0 8px; }
+  .segments > .wrap > p{ text-align: center; color: var(--cream-dim); max-width: 50ch; margin: 0 auto 44px; }
+  .card-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 760px){ .card-grid{ grid-template-columns: 1fr; } }
+  .card{ background: var(--bg-card); border: 1px solid var(--rule); border-radius: 6px; padding: 26px 24px; }
+  .card h3{ font-family: var(--font-display); font-size: 19px; font-weight: 600; margin: 0 0 10px; color: var(--gold-soft); }
+  .card p{ font-size: 14.5px; color: var(--cream-dim); margin: 0; }
+
+  .steps{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+  @media (max-width: 760px){ .steps{ grid-template-columns: 1fr; } }
+  .step{ padding-top: 18px; border-top: 2px solid var(--red-soft); }
+  .step h3{ font-family: var(--font-display); font-size: 19px; font-weight: 600; margin: 0 0 8px; }
+  .step p{ font-size: 14.5px; color: var(--cream-dim); margin: 0; }
+  .how h2{ font-family: var(--font-display); font-weight: 600; font-size: 32px; margin: 0 0 44px; text-align: center; }
+
+  .form-section{
+    background: linear-gradient(180deg, rgba(124,31,43,0.24), rgba(124,31,43,0.05));
+    border-radius: 10px;
+    padding: 56px 32px;
+    margin: 0 24px;
+    border: 1px solid rgba(207,159,71,0.25);
+  }
+  .form-section .form-head{ text-align: center; margin-bottom: 40px; }
+  .form-section h2{ font-family: var(--font-display); font-weight: 600; font-size: clamp(28px, 4vw, 36px); margin: 0 0 12px; }
+  .form-section .form-head p{ color: var(--cream-dim); max-width: 44ch; margin: 0 auto; }
+
+  form{ max-width: 520px; margin: 0 auto; }
+  .field{ margin-bottom: 26px; }
+  .field label.field-label{ display: block; font-weight: 600; font-size: 14.5px; margin-bottom: 10px; color: var(--cream); }
+  .field input[type="text"], .field input[type="email"]{
+    width: 100%;
+    background: rgba(244,236,223,0.06);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 13px 14px;
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-size: 15px;
+  }
+  .field input:focus{ outline: 2px solid var(--gold-soft); outline-offset: 1px; border-color: transparent; }
+  .radio-group{ display: flex; flex-direction: column; gap: 10px; }
+  .radio-option{
+    display: flex; align-items: flex-start; gap: 12px;
+    background: rgba(244,236,223,0.04);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 12px 14px;
+    cursor: pointer;
+    font-size: 14.5px;
+    color: var(--cream-dim);
+    transition: border-color 0.12s ease, background 0.12s ease;
+  }
+  .radio-option:hover{ border-color: rgba(207,159,71,0.4); }
+  .radio-option input[type="radio"]{ margin-top: 3px; accent-color: var(--gold-soft); flex-shrink: 0; }
+  .radio-option:has(input:checked){ border-color: var(--gold-soft); background: rgba(207,159,71,0.08); color: var(--cream); }
+  form .btn-primary{ width: 100%; justify-content: center; margin-top: 6px; }
+  .form-privacy{ text-align: center; font-size: 12.5px; color: var(--cream-faint); margin-top: 14px; }
+
+  #thankyou{ display: none; text-align: center; padding: 30px 0; }
+  #thankyou h3{ font-family: var(--font-display); font-size: 26px; font-weight: 600; margin: 0 0 10px; color: var(--gold-soft); }
+  #thankyou p{ color: var(--cream-dim); margin: 0; }
+
+  footer{ padding: 40px 24px 48px; text-align: center; color: var(--cream-faint); font-size: 13px; }
+  footer .brand-mark{ font-size: 15px; margin-bottom: 6px; display: inline-block; }
+</style>
+</head>
+<body>
+<div class="backdrop"></div>
+
+<header class="wrap">
+  <a class="brand" href="#top">
+    <span class="brand-mark">Cine<em>Tribo</em></span>
+  </a>
+</header>
+
+<main>
+  <section class="hero wrap" id="top" style="border-top:none; padding-top:64px;">
+    <p class="hero-eyebrow">Sessões de cinema com curadoria</p>
+    <h1>O cinema volta a ser um encontro, <span class="accent">não só uma sessão</span></h1>
+    <p class="lede">Sessões temáticas com curadoria, ingresso em grupo com desconto, em horários ociosos dos cinemas — feitas pra tribos de cinéfilos, fãs de heróis e quem gosta de cinema com propósito.</p>
+    <div class="cta-row">
+      <a class="btn-primary" href="#form">Quero entrar na tribo</a>
+      <span class="cta-note">Leva menos de 1 minuto — você entra na lista de pré-lançamento</span>
+    </div>
+    <div class="ticket-divider"></div>
+  </section>
+
+  <section class="wrap">
+    <div class="split">
+      <div>
+        <p class="kicker">O problema</p>
+        <h2>As salas estão vazias na hora errada</h2>
+        <p>Cinemas físicos enfrentam baixa ocupação em dias de semana e horários alternativos, enquanto o público migra pro streaming solitário e sente falta de experiências sociais em torno do cinema. Comunidades de nicho — terror, clássicos, cinema nacional, fãs de heróis, público cristão — não encontram programação curada nem espaço de convivência.</p>
+      </div>
+      <div>
+        <p class="kicker">A proposta</p>
+        <h2>Curadoria + comunidade + assentos ociosos</h2>
+        <p>O CineTribo conecta cinemas parceiros a comunidades temáticas, organizando sessões exclusivas com curadoria e debate pós-filme, em horários de baixa ocupação, com ingresso em grupo a preço reduzido — e uma loja integrada de itens de fã e colecionáveis do universo de cada sessão.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="segments wrap">
+    <h2>Feito pra quem sente falta disso</h2>
+    <p>Se você se encontra em algum desses perfis, é bem provável que o CineTribo tenha uma sessão com a sua cara.</p>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Cinéfilos de nicho</h3>
+        <p>Terror, clássicos, cinema nacional, cinema autoral — filmes que raramente ganham sessão dedicada, com curadoria de verdade e gente pra discutir depois.</p>
+      </div>
+      <div class="card">
+        <h3>Fãs de heróis e colecionáveis</h3>
+        <p>Maratonas e pré-estreias temáticas de Marvel, DC e afins, com loja de action figures, quadrinhos e itens licenciados na própria sessão.</p>
+      </div>
+      <div class="card">
+        <h3>Público de cinema de fé</h3>
+        <p>Programação e sessões em grupo alinhadas a valores e comunidade, em cinemas parceiros, sem abrir mão da experiência de sala.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how wrap">
+    <h2>Como funciona</h2>
+    <div class="steps">
+      <div class="step">
+        <h3>Escolha sua tribo</h3>
+        <p>Selecione o tema ou comunidade que combina com você dentro do app.</p>
+      </div>
+      <div class="step">
+        <h3>Garanta sua vaga em grupo</h3>
+        <p>Ingresso com desconto em sessões de horário ocioso, junto com quem curte o mesmo que você.</p>
+      </div>
+      <div class="step">
+        <h3>Viva a sessão completa</h3>
+        <p>Filme com curadoria, debate com host e loja de itens de fã na saída.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="border-top: none;" id="form">
+    <div class="form-section wrap" style="margin: 0 auto; max-width: 720px;">
+
+      <div id="formWrap">
+        <div class="form-head">
+          <h2>Ajude a validar essa ideia</h2>
+          <p>Estamos testando se essa proposta faz sentido antes de construir o app de verdade. Responder leva 1 minuto e conta muito.</p>
+        </div>
+
+        <form id="leadForm" action="https://docs.google.com/forms/d/e/1FAIpQLSccqsAcIdjQPzqsOADaKieDB2JYR9-5GIPEU-jiJyXHR9Yypg/formResponse" method="POST" target="hidden_iframe">
+
+          <div class="field">
+            <label class="field-label" for="f-nome">Nome</label>
+            <input type="text" id="f-nome" name="entry.491318276" required autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="f-contato">WhatsApp ou e-mail</label>
+            <input type="text" id="f-contato" name="entry.1683083999" required autocomplete="email">
+          </div>
+
+          <div class="field">
+            <label class="field-label">Qual desses perfis mais combina com você?</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="entry.182818250" value="Cinéfilo(a) / gosto de filmes cult, clássicos, terror, cinema nacional" required>Cinéfilo(a) / gosto de filmes cult, clássicos, terror, cinema nacional</label>
+              <label class="radio-option"><input type="radio" name="entry.182818250" value="Fã de filmes de heróis (Marvel, DC) e colecionáveis">Fã de filmes de heróis (Marvel, DC) e colecionáveis</label>
+              <label class="radio-option"><input type="radio" name="entry.182818250" value="Público de cinema de fé">Público de cinema de fé</label>
+              <label class="radio-option"><input type="radio" name="entry.182818250" value="Só curto ir ao cinema em grupo, sem perfil específico">Só curto ir ao cinema em grupo, sem perfil específico</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Você iria a uma sessão temática, com debate/host, em horário de semana, se saísse mais barato em grupo?</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="entry.841287295" value="Sim, com certeza" required>Sim, com certeza</label>
+              <label class="radio-option"><input type="radio" name="entry.841287295" value="Talvez, depende da programação">Talvez, depende da programação</label>
+              <label class="radio-option"><input type="radio" name="entry.841287295" value="Não costumo ir ao cinema em dias de semana">Não costumo ir ao cinema em dias de semana</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Você compraria itens de fã/colecionáveis na hora, se tivesse uma lojinha integrada?</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="entry.1610784565" value="Sim" required>Sim</label>
+              <label class="radio-option"><input type="radio" name="entry.1610784565" value="Não">Não</label>
+              <label class="radio-option"><input type="radio" name="entry.1610784565" value="Talvez">Talvez</label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="submitBtn">Entrar na tribo</button>
+          <p class="form-privacy">Seus dados são usados só pra te avisar do lançamento — nada de spam.</p>
+        </form>
+      </div>
+
+      <div id="thankyou">
+        <h3>Você está dentro! 🎬</h3>
+        <p>Obrigado por validar a ideia com a gente. Em breve entramos em contato com as próximas sessões.</p>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span class="brand-mark">Cine<em>Tribo</em></span><br>
+  Projeto de modelo de negócios · Setor de cinema e entretenimento cultural
+</footer>
+
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+<script>
+  let formSubmitted = false;
+  const form = document.getElementById('leadForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', function(){
+    formSubmitted = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+  });
+
+  document.getElementById('hidden_iframe').addEventListener('load', function(){
+    if (formSubmitted) {
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('thankyou').style.display = 'block';
+    }
+  });
+</script>
+
+</body>
+</html>
